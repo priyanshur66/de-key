@@ -1,4 +1,3 @@
 # DPKI
 
-Decentralized Public Key Infrastructure
-
+Decentralized Public Key Infrastructure.
