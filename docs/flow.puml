@@ -1,0 +1,113 @@
+@startuml Flow
+skinparam dpi 175
+autonumber
+
+participant Admin as admin
+participant Client as client
+participant Server as server
+participant IPFS as ipfs
+participant "Smart Contract" as contract
+
+== Setup software steps ==
+
+note over admin,client
+When admin installs software on client and server it sets by config
+its own public key. Also it sets smart contract address.
+
+So software can trust particular smart contract and admin public key.
+end note
+admin -> client: Install DPKI software
+admin -> server: Install DPKI software
+
+par
+  note over client,server
+  This generated key pair is not related with SSH.
+  We need it to work with smart contract and to interact with admin.
+  That's key pair is more sensentive than SSH key pairs.
+  That's why generation should be processed automatically and
+  should  never leave device.
+  end note
+  client -> client: Generate key pair
+  client -> admin: Send public key
+  else
+  server -> server: Generate key pair
+  server -> admin: Send public key
+end
+
+note over admin,server
+So admin knows devices public keys
+and devices know admin public key.
+end note
+
+== Broadcast CA certificate ==
+
+admin -> admin: Generate new SSH CA key pair
+admin -> contract: Save new SSH CA public key
+
+contract -> client: Notify about new SSH CA public key
+client -> client: Apply new SSH CA\n with SSH daemon
+
+contract -> server: Notify about new SSH CA public key
+server -> server: Apply new SSH CA\n with SSH daemon
+
+== Broadcast new SSH keys by admin ==
+
+note over admin,server
+In this group we have an example with client,
+but for server same steps should work.
+end note
+
+note over admin,server
+Also before these steps admin should prepare CA keys.
+end note
+
+admin -> admin: Generate new SSH key pair
+admin -> admin: Sign newly generated\n public key using SSH CA
+
+note over admin,server
+Admin knows client and server public keys.
+So admin can generate shared secret keys for client and server.
+Using Diffie-Hellman key exchange.
+end note
+admin -> admin: Generate shared secret\n using client public key
+
+admin -> admin: Encrypt newly created\n SSH key pair
+admin -> ipfs: Put encrypted SSH key pair
+note left ipfs: https://docs.ipfs.tech/concepts/content-addressing/
+ipfs --> admin: Return unique data CID
+admin -> admin: Encrypt CID\n using shared secret
+
+admin -> contract: Save to smart contract encrypted CID
+contract -> client: Notify client about new SSH key pair availability
+
+client -> client: Generate shared secret\n using admin public key
+client -> client: Decrypt unique CID
+client -> ipfs: Download encrypted SSH key pair\n using decrypted CID
+ipfs --> client: Encrypted SSH key pair
+
+client -> client: Decrypt SSH key pair
+client -> client: Apply new SSH key pair\n with SSH daemon
+
+... Some time (ex: 1m) ...
+
+admin -> ipfs: Delete data and unpin CID
+note right admin: Encrypted key pair is no longer available
+
+== SSH keys rotation ==
+
+note over admin,server
+In this group we have an example with server,
+but for client same steps should work.
+end note
+
+admin -> contract: Revoke existing SSH key pair
+contract -> server: Notify about revokation
+server -> server: Apply changes\n with SSH daemon
+
+ref over server
+To have new key pair on the server
+it is required to go through steps
+from previous section.
+end
+
+@enduml
