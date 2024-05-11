@@ -1,5 +1,5 @@
 @startuml Flow
-skinparam dpi 175
+skinparam dpi 96
 autonumber
 
 participant Admin as admin
@@ -19,36 +19,62 @@ end note
 admin -> client: Install DPKI software
 admin -> server: Install DPKI software
 
-par
-  note over client,server
-  This generated key pair is not related with SSH.
-  We need it to work with smart contract and to interact with admin.
-  That's key pair is more sensentive than SSH key pairs.
-  That's why generation should be processed automatically and
-  should  never leave device.
-  end note
-  client -> client: Generate key pair
-  client -> admin: Send public key
-  else
-  server -> server: Generate key pair
-  server -> admin: Send public key
-end
+alt Auto mode
+  par
+    note over client,server
+    This generated key pair is not related with SSH.
+    We need it to work with smart contract and to interact with admin.
+    That's key pair is more sensentive than SSH key pairs.
+    That's why generation should be processed automatically and
+    should  never leave device.
+    end note
+    client -> client: Generate key pair
+    client -> admin: Send public key
+    else
+    server -> server: Generate key pair
+    server -> admin: Send public key
+  end
 
-note over admin,server
-So admin knows devices public keys
-and devices know admin public key.
-end note
+  note over admin,server
+  So admin knows devices public keys
+  and devices know admin public key.
+  end note
+else Manual mode
+  note over client,server
+  In this case admin can get public key
+  from device on installation or after it.
+  end note
+  par
+    client -> client: Generate key pair
+    admin -> client: Get public key from device
+    client --> admin: Public key
+    else
+    server -> server: Generate key pair
+    admin -> server: Get public key from device
+    server --> admin: Public key
+  end
+end
 
 == Broadcast CA certificate ==
 
 admin -> admin: Generate new SSH CA key pair
 admin -> contract: Save new SSH CA public key
 
-contract -> client: Notify about new SSH CA public key
-client -> client: Apply new SSH CA\n with SSH daemon
+par
+  contract -> client: Notify about new SSH CA public key
+else
+  contract -> server: Notify about new SSH CA public key
+end
 
-contract -> server: Notify about new SSH CA public key
-server -> server: Apply new SSH CA\n with SSH daemon
+par
+  client -> contract: Get new SSH CA public key
+  contract --> client: Return new SSH CA public key
+  client -> client: Apply new SSH CA\n with SSH daemon
+else
+  server -> contract: Get new SSH CA public key
+  contract --> server: Return new SSH CA public key
+  server -> server: Apply new SSH CA\n with SSH daemon
+end
 
 == Broadcast new SSH keys by admin ==
 
@@ -63,6 +89,7 @@ end note
 
 admin -> admin: Generate new SSH key pair
 admin -> admin: Sign newly generated\n public key using SSH CA
+admin -> admin: Calculate hash of\n newly generated key pair
 
 note over admin,server
 Admin knows client and server public keys.
@@ -77,7 +104,7 @@ note left ipfs: https://docs.ipfs.tech/concepts/content-addressing/
 ipfs --> admin: Return unique data CID
 admin -> admin: Encrypt CID\n using shared secret
 
-admin -> contract: Save to smart contract encrypted CID
+admin -> contract: Save to smart contract encrypted CID with key pair hash
 contract -> client: Notify client about new SSH key pair availability
 
 client -> client: Generate shared secret\n using admin public key
@@ -86,6 +113,7 @@ client -> ipfs: Download encrypted SSH key pair\n using decrypted CID
 ipfs --> client: Encrypted SSH key pair
 
 client -> client: Decrypt SSH key pair
+client -> client: Validate that\n decrypted SSH key pair\n matches hash\n from smart contract
 client -> client: Apply new SSH key pair\n with SSH daemon
 
 ... Some time (ex: 1m) ...
