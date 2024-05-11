@@ -2,6 +2,10 @@
 
 Decentralized Public Key Infrastructure.
 
+<p align="center">
+  <img src="./docs/images/general.png" alt="general" width="300"/>
+</p>
+
 ## VSCode
 
 .vscode/settings.json
