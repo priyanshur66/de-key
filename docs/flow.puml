@@ -1,5 +1,5 @@
 @startuml Flow
-skinparam dpi 96
+skinparam dpi 300
 autonumber
 
 participant Admin as admin
