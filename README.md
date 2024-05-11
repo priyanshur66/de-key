@@ -2,9 +2,15 @@
 
 Decentralized Public Key Infrastructure.
 
+[Here you can check sequence diagram to understand](./docs/render/Flow.png) **how it works**.
+
+---
+
 <p align="center">
-  <img src="./docs/images/general.png" alt="general" width="300"/>
+  <img src="./docs/images/general.png" alt="general" width="400"/>
 </p>
+
+---
 
 ## VSCode
 
