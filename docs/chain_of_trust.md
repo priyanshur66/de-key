@@ -34,16 +34,24 @@ First admin (CA Admin) is responsible for generation new Certificate Authorities
 
 Second admin (Smart Contract Admin) is responsible for interacting with smart contract. This admin has private key of the wallet. SSH server and SSH client trust this admin public key when listen for new events from the smart contract.
 
-With two admins models we can achieve distributed responsibility. If one of the admins start to do suspicious actions, second admin can refuse their action and stop violation.
+With two admins model we can achieve distributed responsibility. If one of the admins start to do suspicious actions, second admin can refuse their action and stop violation.
 
 <p align="center">
   <img src="./images/chain_of_trust_multi_admin.png" alt="general" width="400"/>
 </p>
 
----
+### Multisig
+
+In this chain of trust model, organization has at least three separate admins.
+
+First type of admins and third type are the same as in multi-admin chain of trust model.
+
+But second type of admin (Watchdog) is a new type. They are responsible for signing key pairs from CA Admin using their own private keys.
+
+SSH server after downloading new CA and new SSH key pair, is required to check that key pair is not only signed by CA, but is also signed by all watchdogs. SSH server should have a list of watchdog's public keys to check these signatures (alternative solution is to claim such list using smart contract and it should be Smart Contract Admin responsibility).
 
 <p align="center">
   <img src="./images/chain_of_trust_multisig.png" alt="general" width="400"/>
 </p>
 
----
+With such chain of trust distribution model we can achieve much more responsibility distribution and make a change of suspicious activity much lower.
