@@ -2,4 +2,4 @@
 
 ## Usage
 
-Do not forget to set .env file
+Do not forget to set `.env` file.
