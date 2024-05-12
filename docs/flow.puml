@@ -114,6 +114,7 @@ ipfs --> client: Encrypted SSH key pair
 
 client -> client: Decrypt SSH key pair
 client -> client: Validate that\n decrypted SSH key pair\n matches hash\n from smart contract
+client -> client: Verify SSH key pair\n signature with SSH CA
 client -> client: Apply new SSH key pair\n with SSH daemon
 
 ... Some time (ex: 1m) ...
