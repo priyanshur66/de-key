@@ -2,6 +2,8 @@
 
 Decentralized Public Key Infrastructure.
 
+This project is intended to improve security and usability of keys distribution and make chain of trust more distributed.
+
 - [Here you can check sequence diagram to understand](./docs/render/Flow.png) **how it works**.
 - [Chain of trust description](./docs/chain_of_trust.md) **and how it works**.
 
