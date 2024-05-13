@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.22;
 
-import "forge-std/console.sol";
-
 import "forge-std/Test.sol";
 import {
     DPKIContract,
