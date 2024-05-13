@@ -11,4 +11,7 @@ contract DPKIScript is Script {
         new DPKIContract();
         vm.stopBroadcast();
     }
+
+    // It is a hack to exlcude this file from foundry forge code coverage report.
+    function test() public {}
 }
