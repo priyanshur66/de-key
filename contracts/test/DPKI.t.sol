@@ -4,13 +4,18 @@ pragma solidity ^0.8.22;
 import "forge-std/Test.sol";
 import {
     DPKIContract,
+    KeyPairsState,
     CertificateAuthorityIssued,
     CertificateAuthorityRevoked,
-    ErrCertificateAuthorityNotFound
+    KeyPairIssued,
+    KeyPairRevoked,
+    ErrCertificateAuthorityNotFound,
+    ErrKeyPairsStateNotFound
 } from "../src/DPKI.sol";
 
 contract DPKIContractTest is Test {
-    address constant ADMIN_ADDRESS = address(169);
+    address constant ADMIN_ADDRESS = address(69);
+    address constant DEVICE_ADDRESS = address(96);
 
     DPKIContract public dpkiContract;
 
@@ -63,5 +68,40 @@ contract DPKIContractTest is Test {
         }
 
         vm.stopPrank();
+    }
+
+    function test_KeyPairs() public {
+        // Check that we can't access not existing key pairs.
+        vm.expectRevert(ErrKeyPairsStateNotFound.selector);
+        vm.prank(DEVICE_ADDRESS);
+        dpkiContract.getKeyPairs();
+
+        string memory keyPairHash = "<keyPairHash>";
+        string memory cid = "<cid>";
+        string memory cidFileHash = "<cidFileHash>";
+
+        vm.expectEmit(true, true, true, true);
+        emit KeyPairIssued(ADMIN_ADDRESS, DEVICE_ADDRESS, keyPairHash, cid, cidFileHash);
+        vm.prank(ADMIN_ADDRESS);
+        dpkiContract.addKeyPair(DEVICE_ADDRESS, keyPairHash, cid, cidFileHash);
+
+        vm.prank(DEVICE_ADDRESS);
+        KeyPairsState memory state = dpkiContract.getKeyPairs();
+        assertEq(cid, state.cid);
+        assertEq(cidFileHash, state.cidFileHash);
+
+        string memory keyPairHash2 = "<keyPairHash2>";
+        string memory cid2 = "<cid2>";
+        string memory cidFileHash2 = "<cidFileHash2>";
+
+        vm.expectEmit(true, true, true, true);
+        emit KeyPairRevoked(ADMIN_ADDRESS, DEVICE_ADDRESS, keyPairHash2, cid2, cidFileHash2);
+        vm.prank(ADMIN_ADDRESS);
+        dpkiContract.revokeKeyPair(DEVICE_ADDRESS, keyPairHash2, cid2, cidFileHash2);
+
+        vm.prank(DEVICE_ADDRESS);
+        KeyPairsState memory state2 = dpkiContract.getKeyPairs();
+        assertEq(cid2, state2.cid);
+        assertEq(cidFileHash2, state2.cidFileHash);
     }
 }

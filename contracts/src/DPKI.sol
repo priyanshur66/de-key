@@ -2,20 +2,37 @@
 pragma solidity ^0.8.22;
 
 error ErrCertificateAuthorityNotFound();
+error ErrKeyPairsStateNotFound();
 
-// Admin address and certificate authority id.
-event CertificateAuthorityIssued(address indexed, uint256);
+event CertificateAuthorityIssued(address indexed admin, uint256 id);
 
-// Admin address and certificate authority id.
-event CertificateAuthorityRevoked(address indexed, uint256);
+event CertificateAuthorityRevoked(address indexed admin, uint256 id);
+
+event KeyPairIssued(address indexed admin, address indexed device, string keyPairHash, string cid, string cidFileHash);
+
+event KeyPairRevoked(address indexed admin, address indexed device, string keyPairHash, string cid, string cidFileHash);
+
+// Latest CID with certificates and its hash.
+struct KeyPairsState {
+    string cid;
+    string cidFileHash;
+}
 
 contract DPKIContract {
     // Admin: id: certificate.
     mapping(address => mapping(uint256 => string)) certificateAuthorities;
+    // Admin: latest certificate id.
     mapping(address => uint256) certificateAuthoritiesCount;
+    // Admin: certificate ids.
     mapping(address => uint256[]) certificateAuthoritiesIndex;
 
+    mapping(address => KeyPairsState) keyPairsState;
+
     constructor() {}
+
+    /*
+        Certificate authority methods.
+    */
 
     function addCertificateAuthority(string calldata certificate) external {
         uint256 count = certificateAuthoritiesCount[msg.sender];
@@ -56,12 +73,12 @@ contract DPKIContract {
         }
 
         delete certificateAuthorities[msg.sender][id];
-        removeFromIndex(id);
+        removeCertificateAuthorityIndex(id);
 
         emit CertificateAuthorityRevoked(msg.sender, id);
     }
 
-    function removeFromIndex(uint256 id) private {
+    function removeCertificateAuthorityIndex(uint256 id) private {
         uint256[] storage index = certificateAuthoritiesIndex[msg.sender];
         for (uint256 i = 0; i < index.length; i++) {
             if (index[i] == id) {
@@ -73,4 +90,41 @@ contract DPKIContract {
             }
         }
     }
+
+    /*
+        Certificate authority methods.
+    */
+
+    /*
+        Key pair methods.
+    */
+
+    function addKeyPair(address device, string calldata keyPairHash, string calldata cid, string calldata cidFileHash)
+        external
+    {
+        keyPairsState[device] = KeyPairsState(cid, cidFileHash);
+        emit KeyPairIssued(msg.sender, device, keyPairHash, cid, cidFileHash);
+    }
+
+    function getKeyPairs() external view returns (KeyPairsState memory) {
+        KeyPairsState memory state = keyPairsState[msg.sender];
+        if (bytes(state.cid).length == 0) {
+            revert ErrKeyPairsStateNotFound();
+        }
+        return state;
+    }
+
+    function revokeKeyPair(
+        address device,
+        string calldata keyPairHash,
+        string calldata cid,
+        string calldata cidFileHash
+    ) external {
+        keyPairsState[device] = KeyPairsState(cid, cidFileHash);
+        emit KeyPairRevoked(msg.sender, device, keyPairHash, cid, cidFileHash);
+    }
+
+    /*
+        Key pair methods.
+    */
 }
