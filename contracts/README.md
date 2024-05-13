@@ -1,6 +1,10 @@
 # Contracts
 
-https://sepolia-blockscout.lisk.com
+## Lisk Sepolia testnet
+
+Latest deployed smart contract.
+
+https://sepolia-blockscout.lisk.com/address/0x17536460b997842f8396409514986905eF63b58E
 
 ## Usage
 
