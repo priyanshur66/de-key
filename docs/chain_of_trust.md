@@ -4,10 +4,10 @@ This is the description of the chain of trust model.
 
 ## Chain
 
-1. In general every entity like SSH server or SSH client trusts smart contract. They filters actions and events of smart contract by admin public key.
-2. Smart contract "trust" SSH CA and SSH key pair as they were uploaded using admin signature (private key).
-3. SSH key pair trusts SSH CA.
-4. SSH CA trusts admin.
+1. In general every entity like SSH server or SSH client trusts smart contract. They filter actions and events of smart contract by admin public key which was setup on software install.
+2. Smart contract "trust" SSH CA and SSH key pair as they were uploaded using admin signature on transaction creation (wallet private key).
+3. SSH key pair trusts SSH CA as it was signed using SSH CA private key.
+4. SSH CA trusts admin as it was created by admin.
 5. Admin trusts themself.
 
 <p align="center">
