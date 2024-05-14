@@ -15,19 +15,21 @@ This theme is very crucial for IIoT and DePIN sector. There are a lot of new dev
 
 ![](./docs/images/dpki_lisk_slide.png)
 
+## How it works
+
 In simple words, we propose a way to generate a new key pair for any client or server by the admin user. Sign them using the Certificate Authority (CA). Then, using Diffie-Hellman key exchange, encrypt this key pair and distribute it through IPFS. To verify the integrity of the key pair, customer can use the smart contract. It can notify clients about new key pair availability through the smart contract and claim key pair hashes. After downloading it from IPFS and decryption, client can apply key pair locally (for example new SSH key pair or SSH CA). With such an approach, the **client** can be **sure** that this **key pair belongs** to the **particular admin** and can **trust** it. And by **encrypted way** of distribution **keys** can be **rotated often** to **improve** overall **system security.** Last but not least, everything can be done **without centralized servers** and **doesn't require** to have **own infrastructure.**
 
-**Such system can work with any type of certificates or logic which require to distribute private information over the network.**
+**Such system can work with any type of certificates or logic which require to distribute private information over the network. For example with TLS certificates.**
 
-**To summarize points:**
+**Advantages of such an approach:**
 
 1. All actions with certificate authorities and key pairs are publicity available.
 2. System activity history is immutable.
 3. Safe distribution of new certificates and key pairs.
 4. Fast certificates and key pairs rotation.
 5. Doesn't require centralized or cloud infrastructure at all.
-6. Distributed trust model to improve fault tolerance against system violation.
-7. Even your root certificate authority will be hacked it can be changed quickly.
+6. Distributed trust model to improve fault tolerance against system security violation.
+7. Even if your root certificate authority will be hacked it can be changed quickly.
 8. Certificates and key pairs storage is distrusted.
 9. Smart contracts are publicity available, everyone can check integrity logic and how system works.
 10. Only user which has smart contract private key can issue or revoke certificate, not centralized third-party layer.
@@ -46,6 +48,12 @@ The simplest way to improve overall system security while working with SSH - oft
 4. Revoke old key pair
 
 With our system such flow can be done frequently and securely.
+
+## Future work (use-cases)
+
+### Avoid centralized SSH certificate authority
+
+By utilizing smart contracts, it is possible to avoid using SSH certificate authority but keep the same security level for SSH communication. Every device trusts the smart contract and the admin public key that is interacting with the smart contract. So we can deliver a new key pair through a smart contract and IPFS to the device. And devices can apply this new key pair using the `authorized_keys` file. This can be done on every device, its like trusted public keys exchange. With such an approach, systems can have distributed certificate authority (smart contract) instead of centralized one.
 
 ### IIoT device access
 
