@@ -14,3 +14,16 @@ Do not forget to set `.env` file.
 RPC_URL=https://rpc.sepolia-api.lisk.com
 PRIVATE_KEY=<private-key>
 ```
+
+## VSCode
+
+.vscode/settings.json
+
+```json
+{
+  "solidity.packageDefaultDependenciesContractsDirectory": "contracts/src",
+  "solidity.packageDefaultDependenciesDirectory": "contracts/lib",
+  "solidity.formatter": "forge",
+  "solidity.compileUsingRemoteVersion": "v0.8.23+commit.f704f362",
+}
+```
