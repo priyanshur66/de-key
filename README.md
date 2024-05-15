@@ -4,7 +4,7 @@ Decentralized Public Key Infrastructure.
 
 This project is intended to improve security and usability of keys distribution and make chain of trust more distributed.
 
-This theme is very crucial for IIoT and DePIN sector. There are a lot of new devices setup every day with various purposes, from home to industrial. IIoT area is expected billion of devices in the near future. To have secure and automated infrastructure for certificates distributing and rotation is important for proper, healthy and secure work of the any project or company. Here we come with DPKI solution for DePIN.
+This theme is very crucial for IIoT and DePIN sector. There are a lot of new devices setup every day with various purposes, from home to industrial. IIoT area is expected billion of devices in the near future. To have secure and automated infrastructure for certificates distributing and rotation is important for proper, healthy and secure work of the any project or company. Here we come with DPKI solution for DePIN to improve remote access to drones, vehicles and robots and communication between them.
 
 | Problem | Solution |
 | - | - |
@@ -39,6 +39,8 @@ In simple words, we propose a way to generate a new key pair for any client or s
 Here are real examples of such system usage.
 
 ### SSH keys rotation
+
+To have a remote access to drones, vehicles or robots some companies use SSH protocol.
 
 The simplest way to improve overall system security while working with SSH - often keys rotation. Rotation flow is quite straightforward:
 
