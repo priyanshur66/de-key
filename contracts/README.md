@@ -1,17 +1,16 @@
 # Contracts
 
-## Lisk Sepolia testnet
+## Binance Contract Details
 
-Latest deployed smart contract.
+Deployed smart contract.
 
-https://sepolia-blockscout.lisk.com/address/0x17536460b997842f8396409514986905eF63b58E
+https://opbnb-testnet.bscscan.com/tx/0x8b81921e4208af9d1e48a1b20052c9f78cef6b65637a60cf6597cae2538b11a8
 
 ## Usage
 
 Do not forget to set `.env` file.
 
 ```.env
-RPC_URL=https://rpc.sepolia-api.lisk.com
 PRIVATE_KEY=<private-key>
 ```
 

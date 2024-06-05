@@ -1,19 +1,26 @@
-# DPKI
+# De-Key
 
 Decentralized Public Key Infrastructure.
 
 This project is intended to improve security and usability of keys distribution and make chain of trust more distributed.
 
-This theme is very crucial for IIoT and DePIN sector. There are a lot of new devices setup every day with various purposes, from home to industrial. IIoT area is expected billion of devices in the near future. To have secure and automated infrastructure for certificates distributing and rotation is important for proper, healthy and secure work of the any project or company. Here we come with DPKI solution for DePIN to improve remote access to drones, vehicles and robots and communication between them.
+This theme is very crucial for IIoT and DePIN sector. There are a lot of new devices setup every day with various purposes, from home to industrial. IIoT area is expected billion of devices in the near future. To have secure and automated infrastructure for certificates distributing and rotation is important for proper, healthy and secure work of the any project or company. Here we come with De-Key solution for DePIN to improve remote access to drones, vehicles and robots and communication between them.
 
 | Problem | Solution |
 | - | - |
-| There is **no secure** and decentralized solution to distribute certificates across devices. Centralized solutions **can’t work** in an **honest and transparent** way and **require infrastructure**. | Decentralized **no-infrastructure** way to **securely distribute** certificates utilizes the **Lisk** EVM smart contract for **integrity** and IPFS to **avoid infrastructure**. |
+| There is **no secure** and decentralized solution to distribute certificates across devices. Centralized solutions **can’t work** in an **honest and transparent** way and **require infrastructure**. | Decentralized **no-infrastructure** way to **securely distribute** certificates utilizes the **BNB** smart contract for **integrity** and IPFS to **avoid infrastructure**. |
 
 - [Here you can check sequence diagram to understand](./docs/render/Flow.png) **how it works**.
 - [Chain of trust description](./docs/chain_of_trust.md) **and how it works**.
 
-![](./docs/images/dpki_lisk_slide.png)
+## Deployment details
+
+- [deployed contract link](https://opbnb-testnet.bscscan.com/tx/0x8b81921e4208af9d1e48a1b20052c9f78cef6b65637a60cf6597cae2538b11a8) 
+
+- contract Address : 0x85640Fc5b6A2eDd3D16A2F1871e1026A536a3ECD
+
+
+![](./docs/images/dekey-slide.png)
 
 ## How it works
 
@@ -63,4 +70,4 @@ For example user has an IIoT device and user needs access to it for 5 minutes on
 
 ### Microservices communication
 
-Microservices require secure communication with each other. With DPKI solution we can provide new key pair for every microservice deployed to the cloud and distribute it public key to other microservice. With such an approach communication between microservice will be secure and automatically initiated.
+Microservices require secure communication with each other. With De-Key solution we can provide new key pair for every microservice deployed to the cloud and distribute it public key to other microservice. With such an approach communication between microservice will be secure and automatically initiated.
